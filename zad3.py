@@ -2,6 +2,8 @@ import csv
 import datetime
 from datetime import date
 from time import strftime
+import random
+from random import choice, sample
 DATABASE_PATH = "music.csv"
 
 
@@ -101,14 +103,6 @@ def any_phrase(a):
         return x
 
 
-#nie uzywam
-def print_album(album): #co w nawiasie?
-   #print all given albums date
-   print('Artist: ', name_and_information[0][0])
-   print('Album name: ', name_and_information[0][1])
-   print('Year of release: ', name_and_information[1][0])
-   print('Genre: ', name_and_information[1][1])
-   print('Length: ', name_and_information[1][2])
 
 #2
 def find_by_artist():
@@ -158,6 +152,57 @@ def find_genre():
     if match is False:
         print("there is no genre in database")
 
+'''
+#8
+def random_genre():
+    print(ran_genre)
+    z = open_music()
+    match=False
+    for name, information in z:
+        if information[1].lower() == ran_genre:
+            randomgenre=[] #pusta lista
+            genrelist=[(name[0:]),(information[0:])]
+            randomgenre.append(genrelist) 
+            match=True
+            #print(len(randomgenre))
+    if match is False:
+        print("There is no genre like this")
+     #dodaje albumy z jednego rodzaju muzyki
+    random_index=(random.randrange(0, len(randomgenre)))
+    print(random_index)    '''
+
+
+#8
+def random_genre():
+    print(ran_genre)
+    z = open_music()
+    match=False
+    randomgenre=[]
+    for album in z:
+        if album[1][1].lower() == ran_genre:
+            randomgenre.append(album)
+            match=True
+            #print(len(randomgenre))
+    if match is False:
+        print("There is no genre like this")
+    else:
+        print(randomgenre[random.randint(0, len(randomgenre)-1)])
+
+
+
+#9
+def count_artist():
+    #print(artist_count)
+    z = open_music()
+    match=False
+    counter = 0
+    for name, information in z:
+        if name[0].lower() == artist_count:
+            counter +=1
+            match=True
+    if match is False:
+        print("there is no album this artist in database")
+    print("This artist", artist_count, "has recorded: ", counter, "albums" )
 
 
 
@@ -179,10 +224,16 @@ while True:     # body
         phrase = (input("Type me a pharse which are you looking for ")).lower()
         print(any_phrase(phrase), '\n')
     elif user_choice == "6":       # Find album by genre
-        genre = (input("Tell me a genre wich you are lookig for "))
+        genre = (input("Tell me a genre which you are lookig for "))
         print(find_genre(), '\n')
     elif user_choice == "7":       # Sume of all albums age
         print(ages(), '\n')
+    elif user_choice =="8":
+        ran_genre = (input("Tell me a genre "))
+        random_genre()
+    elif user_choice =="9":
+        artist_count = (input("Type artist "))
+        count_artist()
     elif user_choice == "0":       # Exit
         exit() #return
     else:
