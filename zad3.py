@@ -60,8 +60,7 @@ def add_new_album():
     else:
         print("What is the genre: ")
         genre = input()
-        print("Enter lenght of album in format min:sec, i.e. 31:22")
-        lenght = input()
+        lenght = ask_lenght()
         # z = artist + ' | ' + album + ' | ' + year + ' | ' + genre + ' | ' +
         # lenght
         database_file = open(DATABASE_PATH, "a")
@@ -73,6 +72,19 @@ def add_new_album():
                             )
         database_file.close()
 
+
+def ask_lenght():
+    lenght = input("Enter lenght of album in format min:sec, i.e. 31:22 \n")
+    leght = lenght.split(":")
+    if not (lenght[0].isdigit() and lenght[1].isdigit()):
+        print("Give me min:sec")
+        lenght = ask_lenght()
+    else:
+        len_min = lenght[0:2]
+        len_sec = lenght[3:5]
+        lenght = (":").join([len_min, len_sec])
+        #print(lenght)
+    return lenght
 
 # 2
 def find_by_artist():
