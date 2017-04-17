@@ -55,40 +55,47 @@ def add_new_album():
     album = input().lower()
     print("Enter a year of release album: ")
     year = input()
-    if not year.isdigit():
-        add_new_album()
+    if len(year) == 4:
+        if not year.isdigit():
+            add_new_album()
+        else:
+            print("What is the genre: ")
+            genre = input()
+            lenght = ask_lenght()
+            # z = artist + ' | ' + album + ' | ' + year + ' | ' + genre + ' | ' +
+            # lenght
+            database_file = open(DATABASE_PATH, "a")
+            database_file.write(artist + " | " +
+                                album + " | " +
+                                year + " | " +
+                                genre + " | " +
+                                lenght + "\n"
+                                )
+            database_file.close()
     else:
-        print("What is the genre: ")
-        genre = input()
-        lenght = ask_lenght()
-        # z = artist + ' | ' + album + ' | ' + year + ' | ' + genre + ' | ' +
-        # lenght
-        database_file = open(DATABASE_PATH, "a")
-        database_file.write(artist + " | " +
-                            album + " | " +
-                            year + " | " +
-                            genre + " | " +
-                            lenght + "\n"
-                            )
-        database_file.close()
+        print("Year need 4 numbers")
+        add_new_album()
 
 
 def ask_lenght():
     lenght = input("Enter lenght of album in format min:sec, i.e. 31:22 \n")
-    leght = lenght.split(":")
-    if not (lenght[0].isdigit() and lenght[1].isdigit()):
-        print("Give me min:sec")
-        lenght = ask_lenght()
+    if len(lenght) == 5:
+        leght = lenght.split(":")
+        if not (lenght[0].isdigit() and lenght[1].isdigit()):
+            print("Give me min:sec")
+            lenght = ask_lenght()
+        else:
+            len_min = lenght[0:2]
+            len_sec = lenght[3:5]
+            lenght = (":").join([len_min, len_sec])
+            #print(lenght)
     else:
-        len_min = lenght[0:2]
-        len_sec = lenght[3:5]
-        lenght = (":").join([len_min, len_sec])
-        #print(lenght)
+        leght = ask_lenght()
     return lenght
 
 # 2
 def find_by_artist():
-    print(artist)
+    #print(artist)
     z = open_music()
     match = False
     for name, information in z:
@@ -101,7 +108,7 @@ def find_by_artist():
 
 # 3
 def find_by_year():
-    print(year)
+    #print(year)
     z = open_music()
     match = False
     for name, information in z:
@@ -120,7 +127,7 @@ def find_by_year():
 
 # 4
 def find_by_album():
-    print(album_choice)
+    #print(album_choice)
     z = open_music()
     match = False
     for name, information in z:
@@ -146,7 +153,7 @@ def any_phrase(a):
 
 # 6
 def find_genre():
-    print(genre)
+    #print(genre)
     z = open_music()
     match = False
     for name, information in z:
@@ -178,7 +185,7 @@ def ages():
 
 # 8 wersja zagniezdzona
 def random_genre():
-    print(ran_genre)
+    #print(ran_genre)
     z = open_music()
     match = False
     randomgenre = []
