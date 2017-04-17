@@ -30,9 +30,9 @@ def open_music():
     with open('music.csv', newline='') as f:
         reader = csv.reader(f, delimiter='|')
         for row in reader:
-            name = (row[0], row[1])     # 1s tuple(artist,album)
-            row[2] = int(row[2])        # change year to int
-            information = (row[2], row[3], row[4])      # 2nd tuplet (year, genre, lenght)
+            name = (row[0].strip(), row[1].strip())     # 1s tuple(artist,album)
+            row[2] = (row[2]).strip()        # delete int(row[2]) to make a strip()
+            information = (row[2].strip(), row[3].strip(), row[4].strip())      # 2nd tuplet (year, genre, lenght)
             name_and_information = (name, information)      # make tuplet with 2 tuplets
             music.append(name_and_information)      # add all information to 1 list
         return music
@@ -42,9 +42,9 @@ def open_music():
 def add_new_album():
     print("You choose 1, now you can add information to music collector \n")
     print("Type artist: ")
-    artist = input().capitalize()
+    artist = input().lower()
     print("Enter name of the album: ")
-    album = input().capitalize()
+    album = input().lower()
     print("Enter a year of release album: ")
     year = input()
     if not year.isdigit():
@@ -56,13 +56,22 @@ def add_new_album():
         lenght = input()
         #z = artist + ' | ' + album + ' | ' + year + ' | ' + genre + ' | ' + lenght
         database_file = open(DATABASE_PATH, "a")
-        database_file.write(artist + " | " +
-                            album + " | " +
-                            year + " | " +
-                            genre + " | " +
+        database_file.write(artist + "|" +
+                            album + "|" +
+                            year + "|" +
+                            genre + "|" +
                             lenght + "\n"
                             )
         database_file.close()
+
+
+
+'''def calculate_age():
+    current_year = 2017
+    for album in music:
+        album_year = int(album[1][0])
+        age = current_year - album_year
+        sum_age += age'''
 
 #7
 def ages():
@@ -71,50 +80,14 @@ def ages():
     now = date.today()      # current date (year month, day)
     now_year = now.year     # current year as int
     age_sume = 0            #zero to add to it
-    for i in range(0, len(z)):
-        age_sume += (now_year - z[i][1][0])
+    for name, information in z:
+        album_year = int(information[0])
+        gap_year = now_year-album_year
+        age_sume += gap_year
     return age_sume
 
 
-
-
-def album_artist(b):
-    """Made dictionary with proper key depend from argument"""
-    z = open_music()
-    x = 0
-    my_music = {}       # establish dictionary to later use
-    for i in range(len(z)):     # made proper key and entry for it
-        if b == "2":        # Find albums by artist
-            key = z[i][0][0]
-            x = z[i][0][1], z[i][1]
-        elif b == "3":      # Find albums by year #working
-            key = z[i][1][0]
-            x = z[i][0], z[i][1][1], z[i][1][1]
-        elif b == "4":      # Find musician by album
-            key = z[i][0][1]
-            x = z[i][0][0], z[i][1]
-        elif b == "6":      # Find album by genre
-            key = z[i][1][1]
-            x = z[i][0], z[i][1][0], z[i][1][2]
-        my_music.setdefault(key, []).append(x)      # if entry add key and information for it,
-    return my_music                                 # if key already present add next entry to this key
-
-#2, 3, 4, 6
-def search(a, b):
-    #Depend from input show resault of search message
-    u = album_artist(b) #go to another function
-    if b == "2":        # Find albums by artist
-        c = "No such artst in databse"
-    elif b == "3":      # Find albums by year
-        c = "No albums from that year in database"
-    elif b == "4":      # Find musician by album
-        c = "No such album in data base"
-    elif b == "6":      # Find album by genre
-        c = "No such genre in data base"
-    return u.get(a, [c])
-
-
-#5 dzia
+#5 dziala
 def any_phrase(a):
     #Check if given phrase is in any album name and show that album
     z = open_music()
@@ -128,15 +101,62 @@ def any_phrase(a):
         return x
 
 
-
-def print_album(albums):
+#nie uzywam
+def print_album(album): #co w nawiasie?
    #print all given albums date
-   print('Artist: ', album[0][0])
-   print('Album name: ', album[0][1])
-   print('Year of release: ', album[1][0])
-   print('Genre: ', album[1][1])
-   print('Length: ', album[1][2])
+   print('Artist: ', name_and_information[0][0])
+   print('Album name: ', name_and_information[0][1])
+   print('Year of release: ', name_and_information[1][0])
+   print('Genre: ', name_and_information[1][1])
+   print('Length: ', name_and_information[1][2])
 
+#2
+def find_by_artist():
+    print(artist)
+    z = open_music()
+    match=False
+    for name, information in z:
+        if name[0].lower() == artist:
+            print("Artist ", name[0], "has albums: ", name[1])
+            match=True
+    if match is False:
+        print("there is no album this artist in database")
+
+#3
+def find_by_year():
+    print(year)
+    z = open_music()
+    match=False
+    for name, information in z:
+        if information[0] == year:
+            print("In this year", information[0], "the artist ", name[0], "write: ", name[1])
+            match=True
+    if match is False:
+        print("there is no year this artist in database")
+
+#4
+def find_by_album():
+    print(album_choice)
+    z = open_music()
+    match=False
+    for name, information in z:
+        if name[1].lower() == album_choice:
+            print("This album: ", name[1], "belongs to", name[0])
+            match=True
+    if match is False:
+        print("there is no album in database")
+
+#6
+def find_genre():
+    print(genre)
+    z = open_music()
+    match=False
+    for name, information in z:
+        if information[1].lower() == genre:
+            print("In the genre ", information[1], "artist ", name[0], "write: ", name[1])
+            match=True
+    if match is False:
+        print("there is no genre in database")
 
 
 
@@ -147,20 +167,20 @@ while True:     # body
     if user_choice == "1":
         add_new_album()
     elif user_choice == "2":         # Find albums by artist
-        artist = (input("Give me name of the artist ")).upper()
-        print(search(artist, user_choice))
+        artist = (input("Give me name of the artist ")).lower()
+        find_by_artist()
     elif user_choice == "3":        # Find albums by year
-        year = int(input("Tell me a year to find album "))
-        print(search(year, user_choice), '\n')
+        year = (input("Tell me a year to find album "))
+        find_by_year()
     elif user_choice == "4":         # Find musician by album
-        album_choice = (input("Enter a name of the album ")).upper()
-        print(search(album_choice, user_choice), '\n')
+        album_choice = (input("Enter a name of the album ")).lower()
+        find_by_album()
     elif user_choice == "5":       # Find by pharse
-        phrase = (input("Type me a pharse which are you looking for "))
+        phrase = (input("Type me a pharse which are you looking for ")).lower()
         print(any_phrase(phrase), '\n')
     elif user_choice == "6":       # Find album by genre
         genre = (input("Tell me a genre wich you are lookig for "))
-        print(search(genre, user_choice), '\n')
+        print(find_genre(), '\n')
     elif user_choice == "7":       # Sume of all albums age
         print(ages(), '\n')
     elif user_choice == "0":       # Exit
