@@ -64,10 +64,10 @@ def add_new_album():
         # z = artist + ' | ' + album + ' | ' + year + ' | ' + genre + ' | ' +
         # lenght
         database_file = open(DATABASE_PATH, "a")
-        database_file.write(artist + "|" +
-                            album + "|" +
-                            year + "|" +
-                            genre + "|" +
+        database_file.write(artist + " | " +
+                            album + " | " +
+                            year + " | " +
+                            genre + " | " +
                             lenght + "\n"
                             )
         database_file.close()
