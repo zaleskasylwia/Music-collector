@@ -37,7 +37,7 @@ def open_music():
             information = (
                 row[2].strip(),
                 row[3].strip(),
-                row[4].strip())      # 2nd tuplet (year, genre, lenght)
+                row[4].strip())      # 2nd tuplet (year, genre, length)
             name_and_information = (
                 name,
                 information)      # make tuplet with 2 tuplets
@@ -61,15 +61,15 @@ def add_new_album():
         else:
             print("What is the genre: ")
             genre = input()
-            lenght = ask_lenght()
+            length = ask_length()
             # z = artist + ' | ' + album + ' | ' + year + ' | ' + genre + ' | ' +
-            # lenght
+            # length
             database_file = open(DATABASE_PATH, "a")
             database_file.write(artist + " | " +
                                 album + " | " +
                                 year + " | " +
                                 genre + " | " +
-                                lenght + "\n"
+                                length + "\n"
                                 )
             database_file.close()
     else:
@@ -77,21 +77,21 @@ def add_new_album():
         add_new_album()
 
 
-def ask_lenght():
-    lenght = input("Enter lenght of album in format min:sec, i.e. 31:22 \n")
-    if len(lenght) == 5:
-        leght = lenght.split(":")
-        if not (lenght[0].isdigit() and lenght[1].isdigit()):
+def ask_length():
+    length = input("Enter length of album in format min:sec, i.e. 31:22 \n")
+    if len(length) == 5:
+        leght = length.split(":")
+        if not (length[0].isdigit() and length[1].isdigit()):
             print("Give me min:sec")
-            lenght = ask_lenght()
+            length = ask_length()
         else:
-            len_min = lenght[0:2]
-            len_sec = lenght[3:5]
-            lenght = (":").join([len_min, len_sec])
-            #print(lenght)
+            len_min = length[0:2]
+            len_sec = length[3:5]
+            length = (":").join([len_min, len_sec])
+            #print(length)
     else:
-        leght = ask_lenght()
-    return lenght
+        leght = ask_length()
+    return length
 
 # 2
 def find_by_artist():
@@ -219,14 +219,14 @@ def count_artist():
 def longest_time():
     match = False
     z = open_music()
-    longest_lenght = []
-    for lenght in z:
-        lenght = lenght[1][2]
-        longest_lenght.append(lenght)
-    #print("The longest album takes:", max(longest_lenght))
-    max_lenght = max(longest_lenght)
+    longest_length = []
+    for length in z:
+        length = length[1][2]
+        longest_length.append(length)
+    #print("The longest album takes:", max(longest_length))
+    max_length = max(longest_length)
     for album in z:
-        if album[1][2].lower() == max_lenght:
+        if album[1][2].lower() == max_length:
             print(
                 "the longest album takes:",
                 album[1][2],
