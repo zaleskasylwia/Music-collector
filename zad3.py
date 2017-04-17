@@ -164,7 +164,7 @@ def ages():
     return age_sume
 
 
-# 8
+# 8 wersja zagniezdzona
 def random_genre():
     print(ran_genre)
     z = open_music()
@@ -196,7 +196,7 @@ def count_artist():
     print("This artist", artist_count, "has recorded: ", counter, "albums")
 
 
-# 10
+# 10 wersja zagniezdzona
 def longest_time():
     match = False
     z = open_music()
@@ -204,7 +204,22 @@ def longest_time():
     for lenght in z:
         lenght = lenght[1][2]
         longest_lenght.append(lenght)
-    print("The longest album takes:", max(longest_lenght))
+    #print("The longest album takes:", max(longest_lenght))
+    max_lenght = max(longest_lenght)
+    for album in z:
+        if album[1][2].lower() == max_lenght:
+            print(
+                "the longest album takes:",
+                album[1][2],
+                ", artist ",
+                album[0][0],
+                ", write: ",
+                album [0][1])
+            match = True
+    if match is False:
+        print("Nope")
+
+
 
 
 # BODY
@@ -230,13 +245,13 @@ while True:
         print(find_genre(), '\n')
     elif user_choice == "7":       # Sume of all albums age
         print( "All ages in music collector: ", ages(), '\n')
-    elif user_choice == "8":
+    elif user_choice == "8":        #Find by genre
         ran_genre = (input("Tell me a genre "))
         random_genre()
-    elif user_choice == "9":
+    elif user_choice == "9":        #how many albums have one artist
         artist_count = (input("Type artist "))
         count_artist()
-    elif user_choice == "10":
+    elif user_choice == "10":       #the longest time album
         # input(longest_time)
         longest_time()
     elif user_choice == "0":       # Exit
